@@ -14,9 +14,9 @@ signature: Saverio
   import RenderStamp from '#lib/kb/RenderStamp.svelte';
 
   const issues = {
-    parser: '__ISSUE_PARSER__',
-    hint: '__ISSUE_HINT__',
-    'one-day': '__ISSUE_ONEDAY__',
+    parser: 'https://github.com/megasav/support-kb-4471/issues/1',
+    hint: 'https://github.com/megasav/support-kb-4471/issues/2',
+    'one-day': 'https://github.com/megasav/support-kb-4471/issues/3',
   };
 </script>
 

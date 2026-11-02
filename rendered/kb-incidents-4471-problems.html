@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		<!--[--><!--]--><title>#4471 · three problems, not one · support kb</title>
+  <style>:root{--bg: #fbfaf7;--fg: #1d1d1b;--muted: #6b6a66;--line: #e3e0d8;--accent: #2f6f5e;--warn: #b4501f;--warn-bg: #fbeee6;--note-bg: #eef5f2;--mono: ui-monospace, "Cascadia Code", Menlo, monospace}@media(prefers-color-scheme:dark){:root{--bg: #171716;--fg: #ecebe6;--muted: #9c9a93;--line: #34332f;--accent: #6fbfa6;--warn: #f0905d;--warn-bg: #3a2418;--note-bg: #1d2c27}}body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 system-ui,sans-serif}.kb table{border-collapse:collapse;width:100%;margin:1rem 0;font-size:.92rem}.kb th,.kb td{border-bottom:1px solid var(--line);padding:.35rem .5rem;text-align:left}.kb code{font-family:var(--mono);font-size:.88em}.kb a{color:var(--accent)}.kb.svelte-e2jw2j{max-width:760px;margin:0 auto;padding:2rem 16px 4rem}.crumb.svelte-e2jw2j{font:.8rem var(--mono);text-decoration:none;color:var(--muted)}h1.svelte-e2jw2j{margin:.25rem 0 .5rem;line-height:1.2}.meta.svelte-e2jw2j{display:flex;flex-wrap:wrap;gap:.5rem 1rem;color:var(--muted);font-size:.85rem;margin:0}.status.svelte-e2jw2j{border:1px solid var(--line);border-radius:99px;padding:0 .6rem}.stale.svelte-e2jw2j{color:var(--warn);font-weight:600}.banner.svelte-e2jw2j{background:var(--warn-bg);color:var(--warn);padding:.6rem 1rem;border-radius:6px}footer.svelte-e2jw2j{margin-top:3rem;color:var(--muted);font-size:.8rem;border-top:1px solid var(--line);padding-top:1rem}
+
+aside.svelte-17bri61{border-left:4px solid var(--accent);padding:.5rem 1rem;margin:1rem 0;background:var(--note-bg)}aside.warn.svelte-17bri61{border-color:var(--warn);background:var(--warn-bg)}
+
+.sum.svelte-1op6c6{font-size:1.1rem}.small.svelte-1op6c6{color:var(--muted);font-size:.85em}.none.svelte-1op6c6{color:var(--warn);font-weight:600}.stamp.svelte-1280m42{margin:2rem 0 0;font:.85rem var(--mono);color:var(--muted)}.stamp.svelte-1280m42 b:where(.svelte-1280m42){color:var(--accent);letter-spacing:.04em}.missing.svelte-1280m42{color:var(--warn)}
+
+</style>
+</head>
+  <body data-sveltekit-preload-data="hover">
+    <div style="display: contents"><!--[--><!--[--><!----><!----><div class="kb svelte-e2jw2j"><header><a class="crumb svelte-e2jw2j" href="https://github.com/megasav/support-kb-4471/tree/main/src/routes/kb">support desk · kb</a> <h1 class="svelte-e2jw2j">#4471 · three problems, not one</h1> <p class="meta svelte-e2jw2j"><span>owner <b>support desk</b></span> <span class="status open svelte-e2jw2j">open</span> <span class="svelte-e2jw2j">reviewed 2026-11-02 · 0 days ago</span></p></header> <!--[!--><!--]--> <main><p><a href="https://github.com/megasav/support-kb-4471/tree/main/src/routes/kb/incidents/4471">#4471</a> is marked <em>known: one issue, one fix queued</em>. Its reports describe
+three different problems. Each one needs its own fix, so each one now has its own ticket.</p> <aside class="warn svelte-17bri61"><!---->The queued parser fix ends only the <code>parser</code> reports. The <code>hint</code> and <code>one-day</code> reports keep coming after it ships.<!----></aside><!----> <h2>The problems</h2> <p class="sum svelte-1op6c6"><strong>412</strong> reports in #4471 · <strong>3</strong> problems</p> <table><thead><tr><th>problem</th><th>reports</th><th>tenants</th><th>channels</th><th>seen</th><th>ticket</th></tr></thead><tbody><!--[--><tr><td><code>parser</code></td><td><strong>374</strong></td><td>11</td><td class="small svelte-1op6c6">app ×202 · email ×147 · form ×25</td><td class="small svelte-1op6c6">2026-04-01 → 2026-10-04</td><td><!--[--><a href="https://github.com/megasav/support-kb-4471/issues/1">#1</a><!--]--></td></tr><tr><td><code>hint</code></td><td><strong>33</strong></td><td>3</td><td class="small svelte-1op6c6">form ×33</td><td class="small svelte-1op6c6">2026-04-17 → 2026-09-22</td><td><!--[--><a href="https://github.com/megasav/support-kb-4471/issues/2">#2</a><!--]--></td></tr><tr><td><code>one-day</code></td><td><strong>5</strong></td><td>5</td><td class="small svelte-1op6c6">email ×3 · app ×2</td><td class="small svelte-1op6c6">2026-04-02 → 2026-10-04</td><td><!--[--><a href="https://github.com/megasav/support-kb-4471/issues/3">#3</a><!--]--></td></tr><!--]--></tbody></table><!----> <p>Every report is counted once. The export repeats some reports across its pages, and the table
+counts each report id once (<code>uniqueById</code>).</p> <h2>parser: the shared parser reads dates month first</h2> <p>Reports: <strong>374</strong><!---->. Every tenant on file writes the day
+first. The shared parser reads <code>07/04</code> as 4 July, so day and month swap: <em>“Customer booked 7
+April and got an invite for 4 July.”</em> This happens in every channel and at every tenant on file. It is
+the bug the #4471 page describes, and the queued fix is for this one.</p> <h2>hint: booking-v3 prints a month-first hint and reads the day first</h2> <p>Reports: <strong>33</strong><!---->. They come in through the booking form at the
+tenants on <code>booking-v3</code>. Under the date field that form prints <code>MM/DD/YYYY</code>. People type what the
+hint tells them, month first, and the form reads it the tenant’s way, day first. The swap looks the
+same as <code>parser</code>, but the parser is not involved, so the parser fix does not end it. The fix is
+the hint, or the form reading what the hint asks for.</p> <p>Intake tagged these reports by the reporter’s browser, not by the tenant’s form. Intake’s <code>hint</code> tag and this group do not match, so do not use the tag to triage this problem.</p> <h2>one-day: the date moves by one day</h2> <p>Reports: <strong>5</strong><!---->. Here day and month do not swap. The date moves by
+one day: <em>“Client in Lisbon got Tuesday. Client in Toronto got Monday. Same meeting.”</em> Others say
+the invite says Tuesday and the calendar says Monday, that only June is one day off, and that the
+invite arrived before the booking was made. That points at time zones, not at the date format, so
+neither the parser fix nor the hint fix ends it. The desk had already read these as a one-day move
+(<code>desk-notes.json</code>), but #4471 still counted them under <code>parser</code>.</p> <h2>Why one ticket hid three</h2> <p>The desk merged every date report into #4471 under one title. Decision <a href="https://github.com/megasav/support-kb-4471/tree/main/src/routes/kb/decisions/0001-dedupe-by-subject">0001</a> merges on subject alone, and its consequences say
+engineering splits a ticket later. Nobody split #4471, so one known fix covered three problems.
+The table on this page counts by problem, from the reports themselves, at render time.</p> <!--[--><p class="stamp svelte-1280m42">desk ref <b class="svelte-1280m42">DR-BZ0D-6QQJ</b></p><!--]--><!----><!----></main> <footer class="svelte-e2jw2j">Pages are written by people. Tables and charts are built from data at render time.</footer></div><!----><!----><!----><!--]--> <!--[!--><!--]--><!--]-->
+			
+			
+		</div>
+  </body>
+</html>
