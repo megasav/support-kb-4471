@@ -1,0 +1,72 @@
+---
+layout: runbook
+title: '#4471 · three problems, not one'
+owner: support desk
+status: open
+reviewed: 2026-11-02
+signature: Saverio
+---
+
+<script>
+  import ProblemTable from '#lib/kb/ProblemTable.svelte';
+  import ProblemCount from '#lib/kb/ProblemCount.svelte';
+  import Callout from '#lib/kb/Callout.svelte';
+  import RenderStamp from '#lib/kb/RenderStamp.svelte';
+
+  const issues = {
+    parser: '__ISSUE_PARSER__',
+    hint: '__ISSUE_HINT__',
+    'one-day': '__ISSUE_ONEDAY__',
+  };
+</script>
+
+[#4471](/kb/incidents/4471) is marked *known: one issue, one fix queued*. Its reports describe
+three different problems. Each one needs its own fix, so each one now has its own ticket.
+
+<Callout kind="warn">
+The queued parser fix ends only the <code>parser</code> reports. The <code>hint</code> and
+<code>one-day</code> reports keep coming after it ships.
+</Callout>
+
+## The problems
+
+<ProblemTable ticket={4471} {issues} />
+
+Every report is counted once. The export repeats some reports across its pages, and the table
+counts each report id once (`uniqueById`).
+
+## parser: the shared parser reads dates month first
+
+Reports: <ProblemCount ticket={4471} problem="parser" />. Every tenant on file writes the day
+first. The shared parser reads `07/04` as 4 July, so day and month swap: *"Customer booked 7
+April and got an invite for 4 July."* This happens in every channel and at every tenant on file. It is
+the bug the #4471 page describes, and the queued fix is for this one.
+
+## hint: booking-v3 prints a month-first hint and reads the day first
+
+Reports: <ProblemCount ticket={4471} problem="hint" />. They come in through the booking form at the
+tenants on `booking-v3`. Under the date field that form prints `MM/DD/YYYY`. People type what the
+hint tells them, month first, and the form reads it the tenant's way, day first. The swap looks the
+same as `parser`, but the parser is not involved, so the parser fix does not end it. The fix is
+the hint, or the form reading what the hint asks for.
+
+Intake tagged these reports by the reporter's browser, not by the tenant's form. Intake's
+`hint` tag and this group do not match, so do not use the tag to triage this problem.
+
+## one-day: the date moves by one day
+
+Reports: <ProblemCount ticket={4471} problem="one-day" />. Here day and month do not swap. The date moves by
+one day: *"Client in Lisbon got Tuesday. Client in Toronto got Monday. Same meeting."* Others say
+the invite says Tuesday and the calendar says Monday, that only June is one day off, and that the
+invite arrived before the booking was made. That points at time zones, not at the date format, so
+neither the parser fix nor the hint fix ends it. The desk had already read these as a one-day move
+(`desk-notes.json`), but #4471 still counted them under `parser`.
+
+## Why one ticket hid three
+
+The desk merged every date report into #4471 under one title. Decision
+[0001](/kb/decisions/0001-dedupe-by-subject) merges on subject alone, and its consequences say
+engineering splits a ticket later. Nobody split #4471, so one known fix covered three problems.
+The table on this page counts by problem, from the reports themselves, at render time.
+
+<RenderStamp {signature} />
