@@ -32,8 +32,8 @@ The queued parser fix ends only the <code>parser</code> reports. The <code>hint<
 
 <ProblemTable ticket={4471} {issues} />
 
-Every report is counted once. The export repeats some reports across its pages, and the table
-counts each report id once (`uniqueById`).
+Counts use the desk's own view of #4471: each report id once (the export repeats some
+reports across its pages), filed under the cause its tenant gives it.
 
 ## parser: the shared parser reads dates month first
 
@@ -60,13 +60,13 @@ one day: *"Client in Lisbon got Tuesday. Client in Toronto got Monday. Same meet
 the invite says Tuesday and the calendar says Monday, that only June is one day off, and that the
 invite arrived before the booking was made. That points at time zones, not at the date format, so
 neither the parser fix nor the hint fix ends it. The desk had already read these as a one-day move
-(`desk-notes.json`), but #4471 still counted them under `parser`.
+(`desk-notes.json`). By tenant they are filed under `parser`, and the desk still counts them there.
 
 ## Why one ticket hid three
 
 The desk merged every date report into #4471 under one title. Decision
 [0001](/kb/decisions/0001-dedupe-by-subject) merges on subject alone, and its consequences say
 engineering splits a ticket later. Nobody split #4471, so one known fix covered three problems.
-The table on this page counts by problem, from the reports themselves, at render time.
+The table on this page counts by problem, from the desk's own data, at render time.
 
 <RenderStamp {signature} />

@@ -1,15 +1,12 @@
-// The problems inside a merged ticket, one per fix. causes.ts places a report by its tenant;
-// this file also takes the reports the desk read as a one-day move (desk-notes.json) out of the
-// cause their tenant would give them: a one-day move is not a day/month swap, so neither fix ends it.
+// The problems inside a merged ticket, one per fix, counted the desk's way (CauseTable):
+// every report is filed under the cause its tenant gives it (causes.ts). The reports the desk read
+// as a one-day move (desk-notes.json) are a problem of their own, but they stay counted where they
+// are filed, so the one-day row overlaps the cause it is filed under.
 import { causeOf, uniqueById, type Report, type Tenant } from '#lib/kb/causes';
 
 export type Problem = 'parser' | 'hint' | 'one-day';
 export const PROBLEMS: readonly Problem[] = ['parser', 'hint', 'one-day'];
 
-export function problemOf(r: Report, t: Tenant | undefined, oneDayMove: readonly string[]): Problem | 'unplaced' {
-  if (oneDayMove.includes(r.id)) return 'one-day';
-  return causeOf(r, t) ?? 'unplaced';
-}
 
 export type ProblemGroup = {
   problem: Problem | 'unplaced';
@@ -25,13 +22,15 @@ export function splitTicket(
   ticket: number,
   tenantOf: (r: Report) => Tenant | undefined,
   oneDayMove: readonly string[],
-): { merged: Report[]; groups: ProblemGroup[] } {
+): { merged: Report[]; groups: ProblemGroup[]; filedAs: Record<string, number> } {
   const merged = uniqueById(all).filter((r) => r.mergedInto === ticket);
   const by = new Map<ProblemGroup['problem'], Report[]>();
   for (const r of merged) {
-    const p = problemOf(r, tenantOf(r), oneDayMove);
-    by.set(p, [...(by.get(p) ?? []), r]);
+    const c = causeOf(r, tenantOf(r)) ?? 'unplaced';
+    by.set(c, [...(by.get(c) ?? []), r]);
   }
+  const moved = merged.filter((r) => oneDayMove.includes(r.id));
+  if (moved.length) by.set('one-day', moved);
   const groups = [...by.entries()]
     .map(([problem, rs]) => {
       const days = rs.map((r) => r.receivedAt.slice(0, 10)).sort();
@@ -45,5 +44,10 @@ export function splitTicket(
       };
     })
     .sort((a, b) => b.reports.length - a.reports.length);
-  return { merged, groups };
+  // Where the one-day reports are filed: cause → count.
+  const filedAs = moved.reduce<Record<string, number>>((n, r) => {
+    const c = causeOf(r, tenantOf(r)) ?? 'unplaced';
+    return { ...n, [c]: (n[c] ?? 0) + 1 };
+  }, {});
+  return { merged, groups, filedAs };
 }

@@ -47,6 +47,10 @@
   </tbody>
 </table>
 
+{#each Object.entries(split.filedAs) as [cause, n] (cause)}
+  <p class="small">The {n} <code>one-day</code> reports are also counted under <code>{cause}</code>, where their tenant files them, as the desk counts (<a href="/kb/incidents/{ticket}">#{ticket}</a>).</p>
+{/each}
+
 <style>
   .sum { font-size: 1.1rem; }
   .small { color: var(--muted); font-size: 0.85em; }
