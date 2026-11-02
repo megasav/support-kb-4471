@@ -18,19 +18,28 @@ signature: Saverio
     hint: 'https://github.com/megasav/support-kb-4471/issues/2',
     'one-day': 'https://github.com/megasav/support-kb-4471/issues/3',
   };
+  // From engineering's update on #4471, closed 5 October 2026.
+  const outcomes = {
+    parser: 'fixed: parse dd/mm for eu locales',
+    hint: "won't fix: booking-v3 form retired",
+  };
 </script>
 
-[#4471](/kb/incidents/4471) is marked *known: one issue, one fix queued*. Its reports describe
-three different problems. Each one needs its own fix, so each one now has its own ticket.
+[#4471](/kb/incidents/4471) was marked *known: one issue, one fix queued*. Its reports describe
+three different problems. Each one needs its own fix, so each one has its own ticket.
+
+Engineering closed #4471 on 5 October 2026: the parser is fixed, and the `hint` problem is won't
+fix, because the booking-v3 form is retired. Nothing in that update covers the `one-day`
+problem.
 
 <Callout kind="warn">
-The queued parser fix ends only the <code>parser</code> reports. The <code>hint</code> and
-<code>one-day</code> reports keep coming after it ships.
+#4471 is closed, but the <code>one-day</code> problem is still open. The parser fix does not end
+it, and retiring booking-v3 does not end it either. Its ticket stays open.
 </Callout>
 
 ## The problems
 
-<ProblemTable ticket={4471} {issues} />
+<ProblemTable ticket={4471} {issues} {outcomes} />
 
 Counts use the desk's own view of #4471: each report id once (the export repeats some
 reports across its pages), filed under the cause its tenant gives it.
@@ -40,15 +49,14 @@ reports across its pages), filed under the cause its tenant gives it.
 Reports: <ProblemCount ticket={4471} problem="parser" />. Every tenant on file writes the day
 first. The shared parser reads `07/04` as 4 July, so day and month swap: *"Customer booked 7
 April and got an invite for 4 July."* This happens in every channel and at every tenant on file. It is
-the bug the #4471 page describes, and the queued fix is for this one.
+the bug the #4471 page describes. **Fixed**: the parser now reads dd/mm for eu locales.
 
 ## hint: booking-v3 prints a month-first hint and reads the day first
 
 Reports: <ProblemCount ticket={4471} problem="hint" />. They come in through the booking form at the
 tenants on `booking-v3`. Under the date field that form prints `MM/DD/YYYY`. People type what the
 hint tells them, month first, and the form reads it the tenant's way, day first. The swap looks the
-same as `parser`, but the parser is not involved, so the parser fix does not end it. The fix is
-the hint, or the form reading what the hint asks for.
+same as `parser`, but the parser is not involved, so the parser fix does not end it. **Won't fix**: the booking-v3 form is retired, so no new reports come in this way.
 
 Intake tagged these reports by the reporter's browser, not by the tenant's form. Intake's
 `hint` tag and this group do not match, so do not use the tag to triage this problem.
@@ -60,13 +68,15 @@ one day: *"Client in Lisbon got Tuesday. Client in Toronto got Monday. Same meet
 the invite says Tuesday and the calendar says Monday, that only June is one day off, and that the
 invite arrived before the booking was made. That points at time zones, not at the date format, so
 neither the parser fix nor the hint fix ends it. The desk had already read these as a one-day move
-(`desk-notes.json`). By tenant they are filed under `parser`, and the desk still counts them there.
+(`desk-notes.json`). By tenant they are filed under `parser`, and the desk still counts them there. The parser fix
+does not cover them. **Still open**, with no fix planned yet.
 
 ## Why one ticket hid three
 
 The desk merged every date report into #4471 under one title. Decision
 [0001](/kb/decisions/0001-dedupe-by-subject) merges on subject alone, and its consequences say
-engineering splits a ticket later. Nobody split #4471, so one known fix covered three problems.
+engineering splits a ticket later. Nobody split #4471, so one known fix covered three problems, and closing it left one of them
+open.
 The table on this page counts by problem, from the desk's own data, at render time.
 
 <RenderStamp {signature} />

@@ -5,8 +5,12 @@
   import { tenantOf } from '#lib/kb/locales';
   import { splitTicket, type Problem } from '#lib/kb/problems';
 
-  // issues: problem → link to the ticket filed for it.
-  let { ticket, issues = {} }: { ticket: number; issues?: Partial<Record<Problem, string>> } = $props();
+  // issues: problem → link to the ticket filed for it. outcomes: problem → what engineering did.
+  let {
+    ticket,
+    issues = {},
+    outcomes = {},
+  }: { ticket: number; issues?: Partial<Record<Problem, string>>; outcomes?: Partial<Record<Problem, string>> } = $props();
 
   const split = $derived(splitTicket(reports as Report[], ticket, tenantOf, notes.oneDayMove));
   const channels = (c: Record<string, number>) =>
@@ -25,7 +29,7 @@
 
 <table>
   <thead>
-    <tr><th>problem</th><th>reports</th><th>tenants</th><th>channels</th><th>seen</th><th>ticket</th></tr>
+    <tr><th>problem</th><th>reports</th><th>tenants</th><th>channels</th><th>seen</th><th>ticket</th><th>outcome</th></tr>
   </thead>
   <tbody>
     {#each split.groups as g (g.problem)}
@@ -40,6 +44,13 @@
             <a href={issues[g.problem]}>{label(issues[g.problem]!)}</a>
           {:else}
             <span class="none">none yet</span>
+          {/if}
+        </td>
+        <td>
+          {#if g.problem !== 'unplaced' && outcomes[g.problem]}
+            {outcomes[g.problem]}
+          {:else}
+            <span class="none">open, no fix</span>
           {/if}
         </td>
       </tr>
